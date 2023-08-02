@@ -30,11 +30,8 @@ jobs:
           docker-compose build
           docker-compose up -d
 
-          # Print the contents of the S3 bucket for debugging
-          aws s3 ls s3://elasticbeanstalk-us-east-1-636389623226/
-
-          # Print the contents of the .elasticbeanstalk directory for debugging
-          aws s3 ls s3://elasticbeanstalk-us-east-1-636389623226/.elasticbeanstalk/
+          # List the contents of the .elasticbeanstalk directory after the build
+          ls -la .elasticbeanstalk/
 
           # Create the application version
           aws elasticbeanstalk create-application-version \
