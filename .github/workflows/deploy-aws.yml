@@ -25,13 +25,9 @@ jobs:
           aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws configure set region us-east-1
 
-      - name: Install Docker
-        run: |
-          sudo apt-get install -y docker.io
-
       - name: Build and Deploy Docker image to Elastic Beanstalk
         run: |
-          docker-compose build
+          docker-compose build up -d
           aws elasticbeanstalk create-application-version \
             --application-name 2048-game \
             --version-label v${{ github.sha }} \
