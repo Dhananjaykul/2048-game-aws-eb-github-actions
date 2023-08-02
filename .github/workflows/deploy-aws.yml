@@ -27,5 +27,5 @@ jobs:
 
       - name: Deploy to AWS Elastic Beanstalk
         run: |
-          aws elasticbeanstalk create-application-version --application-name 2048-game --version-label v${{ github.sha }} --source-bundle S3Bucket=elasticbeanstalk-us-east-1-636389623226, S3Key=2048-game.tar
+          aws elasticbeanstalk create-application-version --application-name 2048-game --version-label v${{ github.sha }} --source-bundle S3Bucket=elasticbeanstalk-us-east-1-636389623226, S3Key=.elasticbeanstalk/2048-game.tar
           aws elasticbeanstalk update-environment --environment-name 2048-game-env --version-label v${{ github.sha }}
