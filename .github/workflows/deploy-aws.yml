@@ -25,6 +25,10 @@ jobs:
           aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws configure set region us-east-1
 
+      - name: List S3 Bucket Contents
+        run: |
+          aws s3 ls s3://elasticbeanstalk-us-east-1-636389623226/
+
       - name: Create and Deploy Application Version
         run: |
           aws elasticbeanstalk create-application-version \
