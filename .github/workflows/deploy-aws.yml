@@ -40,7 +40,7 @@ jobs:
           aws elasticbeanstalk create-application-version \
             --application-name 2048-game \
             --version-label v${{ github.sha }} \
-            --source-bundle S3Bucket=elasticbeanstalk-us-east-1-636389623226,S3Key=.elasticbeanstalk/docker-compose.yaml
+            --source-bundle S3Bucket=elasticbeanstalk-us-east-1-636389623226,S3Key=docker-compose.yaml
 
           # Update the environment
           aws elasticbeanstalk update-environment --environment-name 2048-game-env --version-label v${{ github.sha }}
