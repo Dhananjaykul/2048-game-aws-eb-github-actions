@@ -19,6 +19,18 @@ jobs:
           sudo apt install -y python3-pip
           pip3 install --user awscli
 
+      - name: Install Docker on Amazon Linux 2
+        run: |
+          sudo amazon-linux-extras install docker
+          sudo service docker start
+          sudo usermod -aG docker $USER
+          sudo chkconfig docker on
+
+      - name: Install Docker Compose on Amazon Linux 2
+        run: |
+          sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+          sudo chmod +x /usr/local/bin/docker-compose
+
       - name: Configure AWS Credentials
         run: |
           aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -27,7 +39,8 @@ jobs:
 
       - name: Build and Deploy Docker image to Elastic Beanstalk
         run: |
-          docker-compose build up -d
+          docker-compose build
+          docker-compose up -d
           aws elasticbeanstalk create-application-version \
             --application-name 2048-game \
             --version-label v${{ github.sha }} \
