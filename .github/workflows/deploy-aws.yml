@@ -29,11 +29,10 @@ jobs:
         run: |
           sudo amazon-linux-extras install docker
           sudo service docker start
-          sudo usermod -a -G docker $USER
 
       - name: Build and Deploy Docker image to Elastic Beanstalk
         run: |
-          docker-compose build
+          sudo docker-compose up -d
           aws elasticbeanstalk create-application-version \
             --application-name 2048-game \
             --version-label v${{ github.sha }} \
