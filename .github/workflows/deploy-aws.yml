@@ -25,16 +25,6 @@ jobs:
           aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws configure set region us-east-1
 
-      - name: Build Docker image and package docker-compose.yaml
-        run: |
-          docker-compose build
-          mkdir .elasticbeanstalk
-          cp docker-compose.yaml .elasticbeanstalk/
-
-      - name: Upload docker-compose.yaml to S3
-        run: |
-          aws s3 cp .elasticbeanstalk/docker-compose.yaml s3://elasticbeanstalk-us-east-1-636389623226/docker-compose.yaml
-
       - name: Create and Deploy Application Version
         run: |
           aws elasticbeanstalk create-application-version \
