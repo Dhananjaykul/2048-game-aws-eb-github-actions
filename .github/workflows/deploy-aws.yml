@@ -7,7 +7,7 @@ on:
 
 jobs:
   deploy:
-    runs-on: amazonlinux-latest
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Repository
@@ -15,9 +15,8 @@ jobs:
 
       - name: Set up AWS CLI
         run: |
-          sudo yum update -y
-          sudo amazon-linux-extras install -y epel
-          sudo yum install -y python3-pip
+          sudo apt update
+          sudo apt install -y python3-pip
           pip3 install --user awscli
 
       - name: Configure AWS Credentials
@@ -26,8 +25,13 @@ jobs:
           aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws configure set region us-east-1
 
-      - name: Deploy to AWS Elastic Beanstalk
+      - name: Install Docker
         run: |
+          sudo apt-get install -y docker.io
+
+      - name: Build and Deploy Docker image to Elastic Beanstalk
+        run: |
+          docker-compose build
           aws elasticbeanstalk create-application-version \
             --application-name 2048-game \
             --version-label v${{ github.sha }} \
