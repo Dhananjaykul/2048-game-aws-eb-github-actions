@@ -25,16 +25,11 @@ jobs:
           aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws configure set region us-east-1
 
-      - name: List S3 Bucket Contents
+      - name: Build and Deploy Docker image to Elastic Beanstalk
         run: |
-          aws s3 ls s3://elasticbeanstalk-us-east-1-636389623226/
+          docker-compose build
+          docker-compose up -d
 
-      - name: Create and Deploy Application Version
-        run: |
-          aws elasticbeanstalk create-application-version \
-            --application-name 2048-game \
-            --version-label v${{ github.sha }} \
-            --source-bundle S3Bucket=elasticbeanstalk-us-east-1-636389623226,S3Key=docker-compose.yaml
-
-          # Update the environment
-          aws elasticbeanstalk update-environment --environment-name 2048-game-env --version-label v${{ github.sha }}
+          # Optionally, you can use 'eb deploy' to deploy the application to Elastic Beanstalk
+          # Install the Elastic Beanstalk CLI if not already installed: pip3 install awsebcli --upgrade --user
+          # eb deploy
